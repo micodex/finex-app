@@ -1,5 +1,5 @@
 export const STORAGE_KEYS = {
-  transactions: "expense-tracker:transactions",
-  categories: "expense-tracker:categories",
-  settings: "expense-tracker:settings",
+  transactions: "finex-app:transactions",
+  categories: "finex-app:categories",
+  settings: "finex-app:settings",
 } as const;
