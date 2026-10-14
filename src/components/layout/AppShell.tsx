@@ -1,25 +1,23 @@
-import { SidebarInset, SidebarProvider, SidebarTrigger } from "../ui/sidebar";
-import { AppSidebar } from "./AppSidebar";
+import { SidebarInset, SidebarProvider } from "../ui/sidebar";
 import { Outlet } from "react-router-dom";
 
-export function AppShell() {
+import AppSidebar from "./AppSidebar";
+import Navbar from "./Navbar";
+
+export default function AppShell() {
   return (
-    <div dir="rtl" lang="fa" className="min-h-svh">
-      <SidebarProvider>
-        <AppSidebar />
+    <SidebarProvider>
+      <AppSidebar />
 
-        <SidebarInset>
-          <main className="min-w-0 flex-1">
-            <header className="flex h-14 items-center border-b px-4">
-              <SidebarTrigger />
-            </header>
+      <SidebarInset>
+        <Navbar />
 
-            <div className="p-4 md:p-6">
-              <Outlet />
-            </div>
-          </main>
-        </SidebarInset>
-      </SidebarProvider>
-    </div>
+        <main className="min-w-0 flex-1">
+          <div className="mx-auto w-full max-w-[1600px] p-4 md:p-6 xl:p-8">
+            <Outlet />
+          </div>
+        </main>
+      </SidebarInset>
+    </SidebarProvider>
   );
 }

@@ -1,27 +1,26 @@
 import { NavLink, useLocation } from "react-router-dom";
-
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 import {
-  LayoutDashboard,
-  ArrowLeftRight,
   Tags,
   Settings,
-  Wallet,
-  MoreHorizontal,
+  HandCoins,
   BarChart3,
+  MoreHorizontal,
+  ArrowLeftRight,
+  LayoutDashboard,
 } from "lucide-react";
 
 import {
   Sidebar,
-  SidebarContent,
-  SidebarHeader,
-  SidebarFooter,
-  SidebarGroup,
-  SidebarGroupContent,
   SidebarMenu,
-  SidebarMenuButton,
+  SidebarGroup,
+  SidebarFooter,
+  SidebarHeader,
+  SidebarContent,
   SidebarMenuItem,
+  SidebarMenuButton,
+  SidebarGroupContent,
 } from "@/components/ui/sidebar";
 
 const items = [
@@ -32,17 +31,18 @@ const items = [
   { title: "تنظیمات", url: "/settings", icon: Settings },
 ];
 
-export function AppSidebar() {
+export default function AppSidebar() {
   const { pathname } = useLocation();
 
   return (
     <Sidebar side="right" collapsible="icon">
-      <SidebarHeader className="items-center py-4">
+      <SidebarHeader className="h-14 place-content-center border-b">
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton tooltip="فینکس" className="text-primary">
-              <Wallet className="size-5 shrink-0" />
-              <span className="font-semibold">ّFINEX</span>
+              <HandCoins className="size-8 shrink-0" />
+
+              <span className=" font-semibold">فینکس</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
@@ -54,12 +54,7 @@ export function AppSidebar() {
               {items.map((item) => (
                 <SidebarMenuItem key={item.url}>
                   <SidebarMenuButton
-                    render={
-                      <NavLink
-                        className="data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-accent-foreground"
-                        to={item.url}
-                      />
-                    }
+                    render={<NavLink to={item.url} />}
                     isActive={pathname == item.url}
                     tooltip={item.title}
                   >
