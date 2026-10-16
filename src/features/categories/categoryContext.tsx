@@ -1,3 +1,5 @@
+import { useTransactions } from "../transactions/transactionContext";
+
 import {
   createContext,
   useCallback,
@@ -6,11 +8,11 @@ import {
   type ReactNode,
 } from "react";
 
-import { useLocalStorage } from "@/hooks/useLocalStorage";
-import { STORAGE_KEYS } from "@/lib/storage";
 import type { Category } from "@/types/category";
 
 import { DEFAULT_CATEGORIES } from "./defaultCategories";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
+import { STORAGE_KEYS } from "@/lib/storage";
 
 interface CategoryContextValue {
   categories: Category[];
@@ -36,6 +38,8 @@ interface CategoryProviderProps {
 }
 
 export function CategoryProvider({ children }: CategoryProviderProps) {
+  const { uncategorizeTransactions } = useTransactions();
+
   const [categories, setCategories] = useLocalStorage<Category[]>(
     STORAGE_KEYS.categories,
     DEFAULT_CATEGORIES,
@@ -79,11 +83,14 @@ export function CategoryProvider({ children }: CategoryProviderProps) {
 
   const deleteCategory = useCallback(
     (id: string) => {
+      // uncategorize Transactions for this category id
+      uncategorizeTransactions(id);
+
       setCategories((current) =>
         current.filter((category) => category.id !== id),
       );
     },
-    [setCategories],
+    [setCategories, uncategorizeTransactions],
   );
 
   const getCategoryById = useCallback(

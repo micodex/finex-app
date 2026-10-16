@@ -8,7 +8,7 @@ export interface Transaction {
   amount: number;
   currency: Currency;
   type: TransactionType;
-  categoryId: string;
+  categoryId: string | null;
   description: string;
   tags: string[];
 

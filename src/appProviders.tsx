@@ -9,8 +9,8 @@ interface AppProvidersProps {
 
 export function AppProviders({ children }: AppProvidersProps) {
   return (
-    <CategoryProvider>
-      <TransactionProvider>{children}</TransactionProvider>
-    </CategoryProvider>
+    <TransactionProvider>
+      <CategoryProvider>{children}</CategoryProvider>
+    </TransactionProvider>
   );
 }

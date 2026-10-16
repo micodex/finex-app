@@ -25,6 +25,8 @@ interface TransactionContextValue {
   deleteTransaction: (id: string) => void;
 
   getTransactionById: (id: string) => Transaction | undefined;
+
+  uncategorizeTransactions: (categoryId: string) => void;
 }
 
 const TransactionContext = createContext<TransactionContextValue | null>(null);
@@ -89,6 +91,26 @@ export function TransactionProvider({ children }: TransactionProviderProps) {
     [transactions],
   );
 
+  // uncategorize Transactions By CategoryId
+  const uncategorizeTransactions = useCallback(
+    (categoryId: string) => {
+      const now = new Date().toISOString();
+
+      setTransactions((current) =>
+        current.map((transaction) =>
+          transaction.categoryId === categoryId
+            ? {
+                ...transaction,
+                categoryId: null,
+                updatedAt: now,
+              }
+            : transaction,
+        ),
+      );
+    },
+    [setTransactions],
+  );
+
   const value = useMemo(
     () => ({
       transactions,
@@ -96,6 +118,7 @@ export function TransactionProvider({ children }: TransactionProviderProps) {
       updateTransaction,
       deleteTransaction,
       getTransactionById,
+      uncategorizeTransactions,
     }),
     [
       transactions,
@@ -103,6 +126,7 @@ export function TransactionProvider({ children }: TransactionProviderProps) {
       updateTransaction,
       deleteTransaction,
       getTransactionById,
+      uncategorizeTransactions,
     ],
   );
 
