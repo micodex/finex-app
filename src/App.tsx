@@ -1,11 +1,11 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 
 import AppShell from "./components/layout/AppShell";
-import Categories from "./pages/Categories";
-import Dashboard from "./pages/Dashboard";
-import Reports from "./pages/Reports";
-import Transactions from "./pages/Transactions";
-import Settings from "./pages/Settings";
+import CategoriesPage from "./pages/CategoriesPage";
+import DashboardPage from "./pages/DashboardPage";
+import ReportsPage from "./pages/ReportsPage";
+import TransactionsPage from "./pages/TransactionsPage";
+import SettingsPage from "./pages/SettingsPage";
 
 function App() {
   return (
@@ -14,11 +14,11 @@ function App() {
         {/* default route */}
         <Route index element={<Navigate to="/dashboard" replace />} />
 
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/transactions" element={<Transactions />} />
-        <Route path="/categories" element={<Categories />} />
-        <Route path="/reports" element={<Reports />} />
-        <Route path="/settings" element={<Settings />} />
+        <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/transactions" element={<TransactionsPage />} />
+        <Route path="/categories" element={<CategoriesPage />} />
+        <Route path="/reports" element={<ReportsPage />} />
+        <Route path="/settings" element={<SettingsPage />} />
       </Route>
     </Routes>
   );

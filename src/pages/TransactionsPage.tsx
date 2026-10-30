@@ -1,9 +1,9 @@
-export default function Reports() {
+export default function TransactionsPage() {
   return (
     <section>
-      <h1 className="text-2xl font-bold tracking-tight">گذارش‌ها</h1>
+      <h1 className="text-2xl font-bold tracking-tight">تراکنش‌ها</h1>
       <p className="text-sm mt-2 text-muted-foreground">
-        آمار و نمودار تراکنش‌های شما
+        افزودن یا فیلر تراکنش ها
       </p>
 
       <div className="mt-8 rounded-2xl border-2 border-dashed p-10 text-center">

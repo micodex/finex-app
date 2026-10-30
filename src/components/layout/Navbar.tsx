@@ -6,12 +6,7 @@ export default function Navbar() {
       <SidebarTrigger />
 
       <div className="h-5 mx-2 w-px bg-border" aria-hidden="true" />
-      <div className="min-w-0">
-        <p className="mb-0.5 truncate text-xs text-muted-foreground">
-          پنل مدیریت
-        </p>
-        <p className="truncate text-sm font-semibold">Dashboard</p>
-      </div>
+      <p className="truncate text-sm font-semibold">داشبورد</p>
     </header>
   );
 }

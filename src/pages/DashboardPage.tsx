@@ -1,9 +1,9 @@
-export default function Categories() {
+export default function DashboardPage() {
   return (
     <section>
-      <h1 className="text-2xl font-bold tracking-tight">دسته‌بندی‌ها</h1>
+      <h1 className="text-2xl font-bold tracking-tight">داشبورد</h1>
       <p className="text-sm mt-2 text-muted-foreground">
-        اضافه یا حذف دسته‌بندی‌ها
+        نمای کلی وضعیت مالی شما
       </p>
 
       <div className="mt-8 rounded-2xl border-2 border-dashed p-10 text-center">
