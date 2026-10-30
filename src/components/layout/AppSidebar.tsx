@@ -35,14 +35,14 @@ export default function AppSidebar() {
   const { pathname } = useLocation();
 
   return (
-    <Sidebar side="right" collapsible="icon">
+    <Sidebar side="right" collapsible="icon" className="border-e">
       <SidebarHeader className="h-14 place-content-center border-b">
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton tooltip="فینکس" className="text-primary">
               <HandCoins className="size-8 shrink-0" />
 
-              <span className=" font-semibold">فینکس</span>
+              <span className=" font-semibold"></span>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
