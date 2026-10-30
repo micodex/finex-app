@@ -6,7 +6,11 @@ import path from "path";
 export default defineConfig(({ mode }) => ({
   plugins: [react(), tailwindcss()],
 
-  base: mode === "" ? "/finex-app/" : "/",
+  base: mode === "production" ? "/finex-app/" : "/",
+
+  build: {
+    outDir: "dist",
+  },
 
   resolve: {
     alias: {
