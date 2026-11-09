@@ -4,9 +4,11 @@
 
 @font-face {
   font-family: "Arad";
-  src: url("/fonts/Arad-VF.woff2") format("woff2");
+  src:
+    url("/fonts/AradFD-VF.woff2") format("woff2 supports variations"),
+    url("/fonts/AradFD-VF.woff2") format("woff2");
   font-style: normal;
-  font-weight: 100 800;
+  font-weight: 100 900;
   font-display: swap;
 }
 
@@ -63,7 +65,8 @@
   --card-foreground: oklch(0.148 0.004 228.8);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.148 0.004 228.8);
-  --primary: oklch(0.52 0.105 223.128);
+  /* --primary: oklch(0.52 0.105 223.128); */
+  --primary: oklch(69.091% 0.14416 165.601);
   --primary-foreground: oklch(0.984 0.019 200.873);
   --secondary: oklch(0.967 0.001 286.375);
   --secondary-foreground: oklch(0.21 0.006 285.885);
