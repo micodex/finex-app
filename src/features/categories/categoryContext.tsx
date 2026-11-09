@@ -10,7 +10,7 @@ import {
 
 import type { Category } from "@/types/category";
 
-import { DEFAULT_CATEGORIES } from "./defaultCategories";
+import { DEFAULT_CATEGORIES } from "./categoryConstant";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { STORAGE_KEYS } from "@/lib/storage";
 

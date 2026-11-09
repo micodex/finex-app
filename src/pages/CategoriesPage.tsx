@@ -9,7 +9,15 @@ import type { Category, CategoryType } from "@/types/category";
 import type { CategoryFilter } from "@/features/categories/categoryConstant";
 
 // lucide icon imports
-import { Pencil, Plus, Tag, Trash2 } from "lucide-react";
+import {
+  ArrowDownLeft,
+  ArrowUpRight,
+  ListFilter,
+  Pencil,
+  Plus,
+  Tag,
+  Trash2,
+} from "lucide-react";
 
 // shadcn components imports
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -34,6 +42,7 @@ import {
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
+  AlertDialogMedia,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 
@@ -165,34 +174,34 @@ function Categories() {
       {/* category count */}
       <div className="grid gap-3 sm:grid-cols-3">
         <Card>
-          <CardContent className="flex items-center justify-between py-3 gap-3">
+          <CardContent className="flex items-center justify-between py-4 gap-3">
             <span className="text-sm text-muted-foreground">
               کل دسته‌بندی‌ها
             </span>
-            <span className="text-xl font-semibold tabular-nums">
-              {categories.length.toLocaleString("fa-IR")}
+            <span className="text-2xl font-semibold tabular-nums">
+              {categories.length}
             </span>
           </CardContent>
         </Card>
 
         <Card>
-          <CardContent className="flex items-center justify-between py-3 gap-3">
+          <CardContent className="flex items-center justify-between py-4 gap-3">
             <span className="text-sm text-muted-foreground">
               دسته‌بندی درآمد
             </span>
-            <span className="text-xl font-semibold tabular-nums text-emerald-600 dark:text-emerald-400">
-              {incomeCount.toLocaleString("fa-IR")}
+            <span className="text-2xl font-semibold tabular-nums text-emerald-600 dark:text-emerald-400">
+              {incomeCount}
             </span>
           </CardContent>
         </Card>
 
         <Card>
-          <CardContent className="flex items-center justify-between py-3 gap-3">
+          <CardContent className="flex items-center justify-between py-4 gap-3">
             <span className="text-sm text-muted-foreground">
               دسته‌بندی هزینه
             </span>
-            <span className="text-xl font-semibold tabular-nums text-rose-600 dark:text-rose-400">
-              {expenseCount.toLocaleString("fa-IR")}
+            <span className="text-2xl font-semibold tabular-nums text-rose-600 dark:text-rose-400">
+              {expenseCount}
             </span>
           </CardContent>
         </Card>
@@ -201,6 +210,9 @@ function Categories() {
       {/* filter categories */}
       <Card>
         <CardContent className="flex flex-wrap items-center gap-2">
+          <span className="text-muted-foreground">
+            <ListFilter className="size-4" />
+          </span>
           {FILTER_OPTIONS.map((option) => (
             <Button
               key={option.value}
@@ -214,7 +226,7 @@ function Categories() {
           ))}
 
           <span className="ms-auto text-sm text-muted-foreground">
-            {filteredCategories.length.toLocaleString("fa-IR")} دسته‌بندی
+            {filteredCategories.length} دسته‌بندی
           </span>
         </CardContent>
       </Card>
@@ -245,12 +257,13 @@ function Categories() {
             const Icon = CATEGORY_ICONS[category.icon] ?? Tag;
             const categoryLabel =
               category.type === "expense" ? "هزینه" : "درآمد";
+            const isIncome = category.type === "expense";
 
             return (
               <Card key={category.id} className="min-w-0">
                 <CardHeader className="flex-row items-center justify-between gap-3">
                   <div className="flex gap-3">
-                    <div className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-muted">
+                    <div className="flex size-12 shrink-0 items-center justify-center rounded-full bg-muted">
                       <Icon className="size-6" />
                     </div>
 
@@ -261,12 +274,13 @@ function Categories() {
                       <Badge
                         variant={
                           category.type === "income"
-                            ? "green"
+                            ? "default"
                             : category.type === "expense"
                               ? "outline"
                               : "default"
                         }
                       >
+                        {isIncome ? <ArrowUpRight /> : <ArrowDownLeft />}
                         {categoryLabel}
                       </Badge>
                     </div>
@@ -317,7 +331,7 @@ function Categories() {
           <form onSubmit={handleSave}>
             <FieldGroup>
               <Field>
-                <Label>نام دسته‌بندی</Label>
+                <Label htmlFor="category-name">نام دسته‌بندی</Label>
                 <div className="flex gap-2 items-center">
                   <SelectedIconComponent className="size-5" />
                   <Input
@@ -328,7 +342,7 @@ function Categories() {
                       if (nameError) setNameError("");
                     }}
                     placeholder="مثلاً خرید روزانه"
-                    aria-invalid={Boolean(nameError)}
+                    aria-invalid={!!nameError} // !! turn to bolean
                     autoFocus
                   />
                 </div>
@@ -336,12 +350,12 @@ function Categories() {
               </Field>
               <Field>
                 <Label>نوع دسته‌بندی</Label>
-                <div className="flex gap-4 p-1 rounded-md bg-mist-100">
+                <div className="grid grid-cols-2 gap-2 p-1 rounded-full bg-muted/80">
                   <Button
                     type="button"
                     onClick={() => setType("expense")}
                     variant={type === "expense" ? "white" : "ghost"}
-                    className="flex-1"
+                    className={`rounded-full ${type === "expense" ? "" : "text-muted-foreground"}`}
                   >
                     هزینه
                   </Button>
@@ -349,7 +363,7 @@ function Categories() {
                     type="button"
                     onClick={() => setType("income")}
                     variant={type === "income" ? "white" : "ghost"}
-                    className="flex-1"
+                    className={`rounded-full ${type === "income" ? "" : "text-muted-foreground"}`}
                   >
                     درآمد
                   </Button>
@@ -357,7 +371,7 @@ function Categories() {
               </Field>
               <Field>
                 <Label>آیکون</Label>
-                <div className="grid grid-cols-8 gap-6 items-center mt-2">
+                <div className="grid grid-cols-8 gap-4 items-center my-2">
                   {ICON_OPTIONS.map((item) => {
                     const Icon = CATEGORY_ICONS[item.value] ?? Tag;
 
@@ -367,6 +381,7 @@ function Categories() {
                         onClick={() => setIcon(item.value)}
                         size={"icon-lg"}
                         variant={icon === item.value ? "default" : "secondary"}
+                        className="rounded-full"
                       >
                         <Icon className="size-4" />
                       </Button>
@@ -399,9 +414,14 @@ function Categories() {
           if (!open) setCategoryToDelete(null);
         }}
       >
-        <AlertDialogContent>
+        <AlertDialogContent size="sm">
           <AlertDialogHeader>
-            <AlertDialogTitle>حذف دسته‌بندی</AlertDialogTitle>
+            <AlertDialogMedia>
+              <Trash2 />
+            </AlertDialogMedia>
+            <AlertDialogTitle className="font-semibold">
+              حذف دسته‌بندی
+            </AlertDialogTitle>
             <AlertDialogDescription>
               {categoryToDelete && (
                 <>
@@ -409,15 +429,15 @@ function Categories() {
                   <span className="font-semibold">
                     « {categoryToDelete.name} »
                   </span>{" "}
-                  مطمئن هستید؟
+                  مطمئن هستید؟{" "}
                   {affectedTransactionCount > 0 ? (
-                    <>
-                      {affectedTransactionCount.toLocaleString("fa-IR")} تراکنش
-                      مرتبط به «بدون دسته‌بندی» منتقل می‌شود. خود تراکنش‌ها حذف
-                      نخواهند شد.
-                    </>
+                    <span>
+                      {affectedTransactionCount} تراکنش مرتبط به{" "}
+                      <span className="font-semibold">« بدون دسته‌بندی »</span>{" "}
+                      منتقل می‌شود. خود تراکنش‌ها حذف نخواهند شد.
+                    </span>
                   ) : (
-                    <> این دسته‌بندی تراکنش مرتبطی ندارد.</>
+                    <p> این دسته‌بندی تراکنش مرتبطی ندارد.</p>
                   )}
                 </>
               )}

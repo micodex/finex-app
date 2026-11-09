@@ -18,7 +18,7 @@ export default function AppShell() {
         <Navbar />
 
         <main className="min-w-0 flex-1 bg-mist-50">
-          <div className="mx-auto w-full max-w-[1600px] p-4 md:p-6 xl:p-8">
+          <div className="mx-auto w-full max-w-350 p-4 md:p-6 xl:p-8">
             <Outlet />
           </div>
         </main>
