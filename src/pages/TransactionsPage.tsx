@@ -132,9 +132,6 @@ function TransactionsPage() {
         <Card>
           <CardContent className="flex py-4 items-center justify-between gap-3">
             <div className="flex items-center gap-2">
-              {/* <div className="flex size-6 items-center justify-center rounded-full bg-muted/20 text-muted-foreground border border-mist-200">
-                <ArrowLeftRight size={14} />
-              </div> */}
               <p className="text-sm text-muted-foreground font-inter">
                 کل تراکنش‌ها
               </p>
@@ -147,12 +144,9 @@ function TransactionsPage() {
         <Card>
           <CardContent className="flex py-4 items-center justify-between gap-3">
             <div className="flex items-center gap-2">
-              {/* <div className="flex size-6 items-center justify-center rounded-full bg-muted/20 text-muted-foreground border border-mist-200">
-                <ArrowUpRight size={14} />
-              </div> */}
               <p className="text-sm text-muted-foreground">تراکنش‌های درآمد</p>
             </div>
-            <span className="text-2xl font-semibold tabular-nums">
+            <span className="text-2xl font-semibold tabular-nums text-emerald-600">
               {incomeCount}
             </span>
           </CardContent>
@@ -160,12 +154,9 @@ function TransactionsPage() {
         <Card>
           <CardContent className="flex py-4 items-center justify-between gap-3">
             <div className="flex items-center gap-2">
-              {/* <div className="flex size-6 items-center justify-center rounded-full bg-muted/20 text-muted-foreground border border-mist-200">
-                <ArrowDownLeft size={14} />
-              </div> */}
               <p className="text-sm text-muted-foreground">تراکنش‌های هزینه</p>
             </div>
-            <span className="text-2xl font-semibold tabular-nums">
+            <span className="text-2xl font-semibold tabular-nums text-rose-600">
               {expenseCount}
             </span>
           </CardContent>

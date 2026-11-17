@@ -1,12 +1,14 @@
 import { useEffect, useMemo, useState, type SubmitEvent } from "react";
+import { formatDate, getLocalDateString } from "../transactionUtils";
 
 import { useCategories } from "@/features/categories/categoryContext";
 import { useTransactions } from "@/features/transactions/transactionContext";
-import { useLocalStorage } from "@/hooks/useLocalStorage";
-import { STORAGE_KEYS } from "@/lib/storage";
 
-import type { Transaction, TransactionType } from "@/types/transaction";
-import type { AppSettings } from "@/types/settings";
+import type {
+  Currency,
+  Transaction,
+  TransactionType,
+} from "@/types/transaction";
 
 // shadcn imports
 import { Button } from "@/components/ui/button";
@@ -29,26 +31,20 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+
 import { ArrowDownLeft, ArrowUpRight } from "lucide-react";
+import { CalendarDays } from "lucide-react";
 
 interface TransactionFormDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   transaction?: Transaction | null;
-}
-
-const DEFAULT_SETTINGS: AppSettings = {
-  currency: "IRT",
-  usePersianDigits: true,
-  theme: "system",
-};
-
-function getTodayJalali() {
-  return new Intl.DateTimeFormat("fa-IR-u-ca-persian", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  }).format(new Date());
 }
 
 export function TransactionFormDialog({
@@ -59,42 +55,37 @@ export function TransactionFormDialog({
   const { categories } = useCategories();
   const { addTransaction, updateTransaction } = useTransactions();
 
-  const [settings] = useLocalStorage<AppSettings>(
-    STORAGE_KEYS.settings,
-    DEFAULT_SETTINGS,
-  );
-
   // form states
   const [title, setTitle] = useState("");
   const [amount, setAmount] = useState("");
   const [type, setType] = useState<TransactionType>("expense");
   const [categoryId, setCategoryId] = useState<string | null>(null);
-  const [jalaliDate, setJalaliDate] = useState(getTodayJalali);
+  const [date, setDate] = useState<Date>(new Date());
   const [description, setDescription] = useState("");
   const [tagsInput, setTagsInput] = useState("");
   // form error states
   const [titleError, setTitleError] = useState("");
   const [amountError, setAmountError] = useState("");
-  const [dateError, setDateError] = useState("");
 
   const availableCategories = useMemo(
     () => categories.filter((category) => category.type === type),
     [categories, type],
   );
 
+  const [datePickerOpen, setDatePickerOpen] = useState(false);
+
   useEffect(() => {
     if (!open) return;
-
+    // set form states in the edit form
     setTitle(transaction?.title ?? "");
     setAmount(transaction ? String(transaction.amount) : "");
     setType(transaction?.type ?? "expense");
     setCategoryId(transaction?.categoryId ?? null);
-    setJalaliDate(transaction?.jalaliDate ?? getTodayJalali());
+    setDate(transaction?.date ? new Date(transaction.date) : new Date());
     setDescription(transaction?.description ?? "");
     setTagsInput(transaction?.tags.join(", ") ?? "");
     setTitleError("");
     setAmountError("");
-    setDateError("");
   }, [open, transaction]);
 
   // If the transaction type changes, clear an incompatible category.
@@ -111,7 +102,6 @@ export function TransactionFormDialog({
     event.preventDefault();
     setTitleError("");
     setAmountError("");
-    setDateError("");
 
     const parsedAmount = Number(amount);
 
@@ -125,18 +115,13 @@ export function TransactionFormDialog({
       return;
     }
 
-    if (!jalaliDate.trim()) {
-      setDateError("تاریخ تراکنش را وارد کنید.");
-      return;
-    }
-
     const payload = {
       title: title.trim(),
       amount: parsedAmount,
-      currency: settings.currency,
+      currency: "IRT" as Currency,
       type,
       categoryId,
-      jalaliDate: jalaliDate.trim(),
+      date: getLocalDateString(date),
       description: description.trim(),
       tags: [
         ...new Set(
@@ -171,7 +156,7 @@ export function TransactionFormDialog({
           <FieldGroup>
             <Field>
               <Label>نوع تراکنش</Label>
-              <div className="grid grid-cols-2 gap-2 bg-muted/80 p-1 rounded-full">
+              <div className="grid grid-cols-2 gap-2 bg-muted/70 border p-1 rounded-full">
                 <Button
                   className={`rounded-full ${type === "expense" ? "" : "text-muted-foreground"}`}
                   type="button"
@@ -209,9 +194,7 @@ export function TransactionFormDialog({
             </Field>
 
             <Field>
-              <Label htmlFor="transaction-amount">
-                مبلغ ({settings.currency === "IRT" ? "تومان" : "ریال"})
-              </Label>
+              <Label htmlFor="transaction-amount">مبلغ {"تومان"}</Label>
               <Input
                 id="transaction-amount"
                 type="number"
@@ -252,20 +235,38 @@ export function TransactionFormDialog({
             </Field>
 
             <Field>
-              <Label htmlFor="transaction-date">تاریخ شمسی</Label>
-              <Input
-                id="transaction-date"
-                value={jalaliDate}
-                onChange={(event) => {
-                  setJalaliDate(event.target.value);
-                  setDateError("");
-                }}
-                placeholder="۱۴۰۵/۰۸/۰۹"
-                dir="ltr"
-                className="text-right"
-                aria-invalid={!!dateError}
-              />
-              <FieldError>{dateError}</FieldError>
+              <Label>تاریخ شمسی</Label>
+
+              <Popover open={datePickerOpen} onOpenChange={setDatePickerOpen}>
+                <PopoverTrigger
+                  render={
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className="w-full justify-between font-normal"
+                    />
+                  }
+                >
+                  <span>
+                    {date ? formatDate(new Date(date)) : "انتخاب تاریخ"}
+                  </span>
+                  <CalendarDays className="size-4 text-muted-foreground" />
+                </PopoverTrigger>
+
+                <PopoverContent align="start" className="w-auto p-0">
+                  <Calendar
+                    mode="single"
+                    selected={date}
+                    onSelect={(date) => {
+                      if (!date) return;
+                      setDate(date);
+                      setDatePickerOpen(false);
+                    }}
+                    defaultMonth={date}
+                    className="rounded-md"
+                  />
+                </PopoverContent>
+              </Popover>
             </Field>
             <Field>
               <Label htmlFor="transaction-description">توضیحات</Label>

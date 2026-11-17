@@ -12,7 +12,7 @@ export const SAMPLE_TRANSACTIONS: Omit<
     categoryId: "shopping",
     description: "خرید هفتگی خانه",
     tags: ["خانه", "خرید"],
-    jalaliDate: "۱۴۰۵/۰۸/۰۵",
+    date: "2026-11-16",
   },
   {
     title: "حقوق ماهانه",
@@ -22,7 +22,7 @@ export const SAMPLE_TRANSACTIONS: Omit<
     categoryId: null,
     description: "حقوق ماه مهر",
     tags: ["حقوق", "کار"],
-    jalaliDate: "۱۴۰۵/۰۸/۰۱",
+    date: "2026-11-15",
   },
   {
     title: "هزینه تاکسی",
@@ -32,6 +32,6 @@ export const SAMPLE_TRANSACTIONS: Omit<
     categoryId: "transport",
     description: "",
     tags: ["رفت‌وآمد"],
-    jalaliDate: "۱۴۰۵/۰۸/۰۴",
+    date: "2026-11-14",
   },
 ];

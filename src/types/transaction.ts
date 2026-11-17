@@ -13,7 +13,7 @@ export interface Transaction {
   tags: string[];
 
   // date selected by the user
-  jalaliDate: string;
+  date: string;
 
   // When did the user add this record?
   createdAt: string;

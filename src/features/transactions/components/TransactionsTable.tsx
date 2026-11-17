@@ -16,9 +16,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
-import type { Category } from "@/types/category";
-import type { Transaction } from "@/types/transaction";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -27,12 +24,16 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+import type { Category } from "@/types/category";
+import type { Transaction } from "@/types/transaction";
+
+import { formatDate } from "../transactionUtils";
+
 interface TransactionsTableProps {
   transactions: Transaction[];
   categories: Category[];
   onEdit: (transaction: Transaction) => void;
   onDelete: (transaction: Transaction) => void;
-  usePersianDigits?: boolean;
 }
 
 export function TransactionsTable({
@@ -103,7 +104,7 @@ export function TransactionsTable({
                   </TableCell>
 
                   <TableCell className="whitespace-nowrap">
-                    {transaction.jalaliDate}
+                    {formatDate(new Date(transaction.date))}
                   </TableCell>
 
                   <TableCell>
