@@ -1,6 +1,7 @@
-import { SidebarInset, SidebarProvider } from "../ui/sidebar";
+import { Suspense } from "react";
 import { Outlet } from "react-router-dom";
 
+import { SidebarInset, SidebarProvider } from "../ui/sidebar";
 import AppSidebar from "./AppSidebar";
 import Navbar from "./Navbar";
 
@@ -19,7 +20,17 @@ export default function AppShell() {
 
         <main className="min-w-0 flex-1 bg-mist-50">
           <div className="mx-auto w-full max-w-350 p-4 md:p-6 xl:p-8">
-            <Outlet />
+            <Suspense
+              fallback={
+                <div className="flex min-h-screen items-center justify-center">
+                  <span className="text-sm text-muted-foreground">
+                    در حال بارگذاری...
+                  </span>
+                </div>
+              }
+            >
+              <Outlet />
+            </Suspense>
           </div>
         </main>
       </SidebarInset>
